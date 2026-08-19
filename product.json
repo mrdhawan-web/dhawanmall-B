@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Nothing Phone (2a) 5G (8GB, 128GB) - Black",
+    "price": 23999,
+    "description": "Incredible glyph interface design, Mediatek Dimensity 7200 Pro processor, 50MP dual cameras, and a gorgeous 120Hz flexible AMOLED display.",
+    "images": ["https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=600"],
+    "category": "Mobiles",
+    "stock": 15
+  },
+  {
+    "name": "Apple iPhone 15 (128GB) - Blue",
+    "price": 72999,
+    "description": "Features Dynamic Island, 48MP Main camera, and USB-C, all in a durable color-infused glass and aluminum design.",
+    "images": ["https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&q=80&w=600"],
+    "category": "Mobiles",
+    "stock": 12
+  },
+  {
+    "name": "Samsung Galaxy S24 Ultra 5G (12GB, 256GB)",
+    "price": 129999,
+    "description": "Welcome to the era of mobile AI. With Galaxy S24 Ultra in your hands, you can unleash whole new levels of creativity, productivity and possibility.",
+    "images": ["https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=600"],
+    "category": "Mobiles",
+    "stock": 8
+  },
+  {
+    "name": "OnePlus 12R (16GB, 256GB) - Cool Blue",
+    "price": 42999,
+    "description": "Powered by Snapdragon 8 Gen 2, Dual Cryo-velocity VC cooling, and a massive 5500 mAh battery with 100W SUPERVOOC charging.",
+    "images": ["https://images.unsplash.com/photo-1565630916779-e303be97b6f5?auto=format&fit=crop&q=80&w=600"],
+    "category": "Mobiles",
+    "stock": 20
+  },
+  {
+    "name": "Apple AirPods Pro (2nd Gen) with USB-C",
+    "price": 24900,
+    "description": "Rebuilt from the sound up. Up to 2x more Active Noise Cancellation, Adaptive Audio, and personalized Spatial Audio.",
+    "images": ["https://images.unsplash.com/photo-1588449668338-d13417f16ecf?auto=format&fit=crop&q=80&w=600"],
+    "category": "Electronics",
+    "stock": 25
+  },
+  {
+    "name": "Sony WH-1000XM5 Wireless Headphones",
+    "price": 29990,
+    "description": "Industry leading active noise cancellation with 8 microphones, 30 hours of battery life, and exquisite sound resolution.",
+    "images": ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600"],
+    "category": "Electronics",
+    "stock": 18
+  },
+  {
+    "name": "Sony PlayStation 5 Slim Console",
+    "price": 44990,
+    "description": "Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for haptic feedback, adaptive triggers and 3D Audio.",
+    "images": ["https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&q=80&w=600"],
+    "category": "Electronics",
+    "stock": 10
+  },
+  {
+    "name": "ASUS ROG Zephyrus G14 Gaming Laptop",
+    "price": 144990,
+    "description": "AMD Ryzen 9 8945HS, NVIDIA GeForce RTX 4060, 16GB RAM, 1TB SSD, 14-inch 120Hz OLED screen.",
+    "images": ["https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=600"],
+    "category": "Electronics",
+    "stock": 5
+  },
+  {
+    "name": "iPad Air (11-inch, M2 chip, 128GB)",
+    "price": 59900,
+    "description": "Now available in an 11-inch design, iPad Air is supercharged by the incredibly fast Apple M2 chip. It features a stunning Liquid Retina display.",
+    "images": ["https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=600"],
+    "category": "Electronics",
+    "stock": 15
+  },
+  {
+    "name": "Nike Air Max Pulse Sneakers",
+    "price": 12995,
+    "description": "Inspired by the London music scene, the Nike Air Max Pulse brings an underground touch to the iconic Air Max line.",
+    "images": ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=600"],
+    "category": "Fashion",
+    "stock": 14
+  },
+  {
+    "name": "Levi's Men's 511 Slim Fit Jeans",
+    "price": 3199,
+    "description": "A modern slim with room to move, the 511 Slim Fit Jeans are a classic since right now. These jeans sit below the waist with a slim leg.",
+    "images": ["https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=600"],
+    "category": "Fashion",
+    "stock": 45
+  },
+  {
+    "name": "Ray-Ban Classic Aviator Sunglasses",
+    "price": 10990,
+    "description": "Currently one of the most iconic sunglass models in the world, Ray-Ban Aviator Classic sunglasses were originally designed for U.S. aviators.",
+    "images": ["https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=600"],
+    "category": "Fashion",
+    "stock": 30
+  },
+  {
+    "name": "Tommy Hilfiger Men's Cotton Polo Shirt",
+    "price": 2799,
+    "description": "Crafted from premium organic cotton pique, this signature regular-fit polo shirt features a classic flat-knit collar and iconic flag embroidery.",
+    "images": ["https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&q=80&w=600"],
+    "category": "Fashion",
+    "stock": 50
+  },
+  {
+    "name": "Casio G-Shock Matte Black Sport Watch",
+    "price": 8495,
+    "description": "Shock resistant, 200m water resistance, world time, stopwatch, countdown timer, and mineral glass lens built for high impact outdoor sports.",
+    "images": ["https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?auto=format&fit=crop&q=80&w=600"],
+    "category": "Fashion",
+    "stock": 22
+  },
+  {
+    "name": "Premium Leather Wallet for Men - Tan",
+    "price": 1499,
+    "description": "Handcrafted genuine leather slim billfold wallet featuring 8 credit card slots, ID window, and dual currency compartments.",
+    "images": ["https://images.unsplash.com/photo-1627124765135-56c67ef384d5?auto=format&fit=crop&q=80&w=600"],
+    "category": "Fashion",
+    "stock": 50
+  },
+  {
+    "name": "Logitech MX Master 3S Wireless Mouse",
+    "price": 9495,
+    "description": "An icon remastered. Feel every moment of your workflow with even more precision, tactile click feedback, and 8,000 DPI track-on-glass.",
+    "images": ["https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&q=80&w=600"],
+    "category": "Electronics",
+    "stock": 35
+  },
+  {
+    "name": "Ergonomic Office Chair with Lumbar Support",
+    "price": 14999,
+    "description": "Fully adjustable mesh high-back chair featuring 3D armrests, dynamic lumbar support, tilt locks, and heavy-duty nylon wheelbase.",
+    "images": ["https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?auto=format&fit=crop&q=80&w=600"],
+    "category": "Home",
+    "stock": 10
+  },
+  {
+    "name": "Nutribullet High-Speed Blender (900W)",
+    "price": 7999,
+    "description": "With 900 watts of power, the Pro is faster and stronger than the original, but just as simple to use. Load it up, twist, and blend.",
+    "images": ["https://images.unsplash.com/photo-1578643463396-0997cb5328c1?auto=format&fit=crop&q=80&w=600"],
+    "category": "Home",
+    "stock": 15
+  },
+  {
+    "name": "Philips Air Fryer XL (4.1L, Touch Screen)",
+    "price": 9999,
+    "description": "Philips brings the World’s No.1 Airfryer to everyone’s home. Enjoy healthy food that's crispy on the outside and tender on the inside, with up to 90% less fat.",
+    "images": ["https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&q=80&w=600"],
+    "category": "Home",
+    "stock": 12
+  },
+  {
+    "name": "Dyson V11 Absolute Cordless Vacuum Cleaner",
+    "price": 54900,
+    "description": "Twice the suction of any cordless vacuum. Intelligently optimizes suction and run time, with deep cleaning system reports on an LCD screen.",
+    "images": ["https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&q=80&w=600"],
+    "category": "Home",
+    "stock": 6
+  }
+]
