@@ -1,4 +1,4 @@
-{
+y{
   "name": "dhawan-mall-backend",
   "version": "1.0.0",
   "description": "Backend services for Dhawan Mall e-commerce platform",
@@ -18,8 +18,8 @@
     "mongoose": "^7.6.3",
     "multer": "^1.4.5-lts.1",
     "node-telegram-bot-api": "^0.64.0",
-    "razorpay": "^2.9.2"
-    "axios": "^1.7.2",
+    "razorpay": "^2.9.2",
+    "axios": "^1.7.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
