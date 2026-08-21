@@ -4,20 +4,33 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dhawan Mall | Shop Online like Flipkart</title>
+    <title>Dhawan Mall</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- PWA ke liye ye 2 line add ki -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#ff5722">
+
     <style>
       body {
         font-family: 'Inter', sans-serif;
         background-color: #f1f3f6;
+        margin: 0;
       }
     </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- PWA Service Worker - ye nayi add ki -->
+    <script>
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
+    </script>
   </body>
 </html>
