@@ -1,71 +1,69 @@
 const express = require('express');
-const app = express();
-const path = require('path');
-
-app.use(express.static(__dirname)); // ye line zaroori hai
-app.use(express.json());
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
-require('dotenv').config();
-const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const path = require('path');
-
-// Route Imports
-const authRoutes = require('./routes/auth');
-const productRoutes = require('./routes/products');
-const cartRoutes = require('./routes/cart');
-const orderRoutes = require('./routes/orders');
-const paymentRoutes = require('./routes/payment');
-const uploadRoutes = require('./routes/upload');
+require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname)); // index.html, product.json serve karega
 
-// DB Connection
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/dhawan_mall';
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Successfully connected to MongoDB Database.'))
-.catch(err => {
-  console.error('MongoDB database connection error:', err);
-  console.log('Ensure MongoDB service is running locally or check MONGO_URI.');
-});
+// ========== DATABASE ==========
+// Agar MongoDB use nahi kar rahe to ye 4 line comment kar do // laga ke
+// const mongoose = require('mongoose');
+// const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/dhawan_mall';
+// mongoose.connect(MONGO_URL)
+// .then(() => console.log('MongoDB connected'))
+// .catch(err => console.log('MongoDB error:', err));
 
-// Mount Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/payment', paymentRoutes);
-app.use('/api/upload', uploadRoutes);
 
-// Base Route
+// ========== TELEGRAM + SMS FUNCTION ==========
+const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios');
+
+const bot = new TelegramBot(process.env.Telegram_bot_token, { polling: false });
+const CHAT_ID = process.env.Telegram_chat_id;
+const SMS_KEY = process.env.fast2sms_api_key;
+
+async function sendOrderNotification(orderData) {
+    const msg = `🔔 New Order Dhawan Mall\nName: ${orderData.name}\nPhone: ${orderData.phone}\nTotal: ${orderData.total}`;
+    
+    // Telegram
+    await bot.sendMessage(CHAT_ID, msg);
+    
+    // SMS
+    await axios.post('https://www.fast2sms.com/dev/bulkV2', {
+        message: msg,
+        numbers: orderData.phone
+    }, {
+        headers: { authorization: SMS_KEY }
+    });
+}
+
+
+// ========== ROUTES ==========
 app.get('/', (req, res) => {
-  res.json({
-    name: 'Dhawan Mall API Services',
-    version: '1.0.0',
-    description: 'Active rest APIs supporting secure shopper logins, cart persistence, payment gateway checks, and admin controls.'
-  });
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ success: false, message: 'Internal Server Error' });
+app.post('/order', async (req, res) => {
+    try {
+        await sendOrderNotification(req.body);
+        res.json({ success: true, message: 'Order placed' });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: 'Order failed' });
+    }
 });
 
-const PORT = process.env.PORT || 5000;
+
+// ========== SERVER START ==========
 app.listen(PORT, () => {
-  console.log(`Dhawan Mall Server is running on port ${PORT}`);
+    console.log(`Dhawan Mall Server is running on port ${PORT}`);
 });
 
 module.exports = app;
