@@ -1,36 +1,161 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dhawan Mall</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- PWA ke liye ye 2 line add ki -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#ff5722">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhawan Mall</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}
+body{background:#f1f5f9}
+.header{background:#2874f0;color:#fff;padding:10px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20}
+.dm{width:38px;height:38px;border:1px solid #fff;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.brand{line-height:1}
+.brand b{font-style:italic}
+.brand span{font-size:11px;display:flex;gap:3px;color:#ffe11b}
+.searchbar{padding:8px 10px;background:#2874f0}
+.searchbar div{background:#fff;display:flex;align-items:center;border-radius:4px;padding:10px 12px;gap:10px}
+.searchbar input{border:none;outline:none;flex:1;font-size:14px}
+.sale{margin:10px;background:#feebc8;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between}
+.sale b{color:#d13c00}
+.sale button{background:#c2410c;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:700}
+.chips{display:flex;gap:10px;padding:10px;overflow:auto}
+.chip{background:#fff;border:1px solid #ddd;padding:8px 18px;border-radius:25px;white-space:nowrap;font-weight:600;font-size:13px}
+.chip.active{background:#2874f0;color:#fff;border-color:#2874f0}
+.title{padding:10px;font-weight:800;font-size:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{background:#fff;border-radius:12px;padding:10px;position:relative}
+.off{position:absolute;top:8px;left:8px;background:#16a34a;color:#fff;font-size:11px;padding:3px 7px;border-radius:4px;font-weight:700}
+.card img{width:100%;height:110px;object-fit:contain}
+.card h4{font-size:13px;height:36px;overflow:hidden;margin:6px 0}
+.card p{font-size:12px;color:gray}
+.price{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.price b{font-size:15px}
+.add{border:1.5px solid #2874f0;color:#2874f0;background:#fff;padding:5px 16px;border-radius:6px;font-weight:700}
+.botnav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:20}
+.botnav div{text-align:center;font-size:11px;color:gray}
+.botnav div.active{color:#2874f0}
+.botnav i{font-size:18px;display:block;margin-bottom:2px}
 
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #f1f3f6;
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+/* Menu Drawer - Image 2 style */
+#drawer{position:fixed;top:0;left:-100%;width:75%;height:100%;background:#1e293b;color:#fff;z-index:50;transition:.35s;padding:20px;border-radius:0 18px 18px 0}
+#drawer.open{left:0}
+#drawer a{display:flex;gap:12px;padding:16px 10px;color:#cbd5e1;text-decoration:none;border-bottom:1px solid #2d3748}
+#drawer a:hover{background:#334155;color:#fff;border-radius:10px}
 
-    <!-- PWA Service Worker - ye nayi add ki -->
-    <script>
-      if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js');
-      }
-    </script>
-  </body>
+/* No Alert - Toast */
+#toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:25px;display:none;z-index:60;font-size:13px}
+
+/* Login - Image 4 style animation */
+#loginModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:100}
+.loginBox{background:#fff;width:90%;max-width:360px;border-radius:16px;padding:20px;text-align:center;animation:pop.3s}
+@keyframes pop{from{transform:scale(.8)}to{transform:scale(1)}}
+.bag{font-size:50px;animation:bagMove 1s infinite alternate}
+@keyframes bagMove{from{transform:translateX(-10px) rotate(-5deg)}to{transform:translateX(10px) rotate(5deg)}}
+.loginBox input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+.loginBox button{width:100%;background:#2874f0;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;margin-top:8px}
+</style>
+</head>
+<body>
+
+<div class="header">
+<i class="fa-solid fa-bars" onclick="toggleMenu()"></i>
+<div class="dm">DM</div>
+<div class="brand"><b>Dhawan Mall</b><span>Explore <b>Plus</b> <i class="fa-solid fa-bolt"></i></span></div>
+<div style="margin-left:auto;display:flex;gap:16px"><i class="fa-solid fa-cart-shopping" onclick="showToast('Cart: '+cartCount+' items')"></i><span id="userIcon" onclick="openLogin()"><i class="fa-solid fa-user"></i> <span id="uNum">86906..</span></span></div>
+</div>
+
+<div class="searchbar"><div><i class="fa-solid fa-magnifying-glass" style="color:gray"></i><input id="sBox" placeholder="Search for Products, Brands and More" oninput="doSearch()"></div></div>
+
+<div class="sale">
+<div><b><i class="fa-solid fa-bolt"></i> Dhawan Mall Mega Sale</b><br><small>Flat 25% OFF on Branded Tea, Atta & Oil Packets</small></div>
+<button>PACKED25</button>
+</div>
+
+<div class="chips" id="chips"></div>
+<div class="title" id="catTitle">Packaged Groceries Catalog (9000+ Items)</div>
+<div class="grid" id="grid">Loading...</div>
+
+<div class="botnav">
+<div class="active"><i class="fa-solid fa-house"></i>Home</div>
+<div><i class="fa-solid fa-layer-group"></i>Categories</div>
+<div onclick="showToast('Cart: '+cartCount+' items')"><i class="fa-solid fa-cart-shopping"></i>Cart</div>
+<div onclick="openLogin()"><i class="fa-solid fa-user"></i>Profile</div>
+</div>
+
+<div id="drawer">
+<h3 style="margin-bottom:15px"><i class="fa-solid fa-house"></i> Dhawan Mall</h3>
+<a href="#" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> Home</a>
+<a href="#"><i class="fa-regular fa-image"></i> Gallery</a>
+<a href="#"><i class="fa-solid fa-blog"></i> Blog</a>
+<a href="#"><i class="fa-solid fa-user"></i> About</a>
+<a href="#"><i class="fa-solid fa-envelope"></i> Contact</a>
+</div>
+
+<div id="toast"></div>
+
+<div id="loginModal" onclick="if(event.target==this)closeLogin()">
+<div class="loginBox">
+<div class="bag">👜</div>
+<h3>Welcome to Dhawan Mall</h3>
+<p style="font-size:12px;color:gray">Login to see best offers</p>
+<input id="phone" placeholder="Enter mobile number">
+<button onclick="doLogin()">Continue</button>
+<p style="font-size:11px;margin-top:10px;color:gray">We will send OTP on this number</p>
+</div>
+</div>
+
+<script>
+let all=[], cartCount=0;
+const categories=["All","Tea & Coffee","Atta & Rice","Dairy & Oils","Masala","Snacks"];
+function initChips(){
+  document.getElementById('chips').innerHTML=categories.map((c,i)=>`<div class="chip ${i==0?'active':''}" onclick="filterCat(this,'${c}')">${c}</div>`).join('');
+}
+async function load(){
+  const r=await fetch('/product.json?v='+Date.now());
+  all=await r.json();
+  render(all);
+}
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML=list.map(p=>`
+    <div class="card">
+      <div class="off">15% OFF</div>
+      <img src="${p.images?.[0]||'https://via.placeholder.com/150'}">
+      <h4>${p.name}</h4>
+      <p>500 g</p>
+      <div class="price"><b>₹${p.price}</b><button class="add" onclick="addCart()">ADD</button></div>
+    </div>
+  `).join('');
+  document.getElementById('catTitle').innerText=`Packaged Groceries Catalog (${list.length} Items)`;
+}
+function filterCat(el,cat){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  if(cat=='All') render(all);
+  else render(all.filter(p=>p.name.toLowerCase().includes(cat.toLowerCase().split(' ')[0])));
+}
+function doSearch(){
+  const q=document.getElementById('sBox').value.toLowerCase();
+  render(all.filter(p=>p.name.toLowerCase().includes(q)));
+}
+function addCart(){ cartCount++; showToast('Added to cart! Total: '+cartCount); }
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerText=msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none',2500);
+}
+function toggleMenu(){ document.getElementById('drawer').classList.toggle('open'); }
+function openLogin(){ document.getElementById('loginModal').style.display='grid'; }
+function closeLogin(){ document.getElementById('loginModal').style.display='none'; }
+function doLogin(){
+  const ph=document.getElementById('phone').value;
+  if(ph.length<10){showToast('Enter valid number');return;}
+  document.getElementById('uNum').innerText=ph.slice(0,5)+'..';
+  closeLogin(); showToast('Login Successful!');
+}
+initChips(); load();
+</script>
+</body>
 </html>
