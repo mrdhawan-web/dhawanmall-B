@@ -8,29 +8,23 @@ const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// React ka build folder serve karega
-app.use(express.static(path.join(__dirname, 'dist')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-// API wala code wahi rahega (tumhara telegram wala)
 app.post('/api/order', async (req, res) => {
   try {
-    const orderData = req.body;
-    const msg = `New Order - ${orderData.name} - ${orderData.phone} - Rs.${orderData.total}`;
-    console.log(msg);
-    // Telegram code yaha tha wahi rehne do
-    res.json({ success: true });
+    const data = req.body;
+    console.log("New Order:", data);
+    res.json({ success: true, message: "Order received" });
   } catch (e) {
     res.status(500).json({ success: false });
   }
 });
 
-// React ke liye
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
 app.listen(PORT, () => {
-  console.log(`Dhawan Mall Server is running on port ${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });
