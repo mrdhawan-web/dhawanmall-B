@@ -25,13 +25,26 @@ app.use(express.static(__dirname)); // index.html, product.json serve karega
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
 
-const bot = new TelegramBot(process.env.Telegram_bot_token, { polling: false });
+const TelegramBot = require('node-telegram-bot-api');
+const axios = require('axios');
+
+let bot = null;
+try {
+  if(process.env.Telegram_bot_token){
+    bot = new TelegramBot(process.env.Telegram_bot_token, { polling: false });
+  }
+} catch(e){ console.log('Bot init skip:', e.message) }
+
 const CHAT_ID = process.env.Telegram_chat_id;
 const SMS_KEY = process.env.fast2sms_api_key;
 
 async function sendOrderNotification(orderData) {
-    const msg = `🔔 New Order Dhawan Mall\nName: ${orderData.name}\nPhone: ${orderData.phone}\nTotal: ${orderData.total}`;
-    
+  try {
+    const msg = `New Order: ${orderData.name} - ${orderData.phone} - ${orderData.total}`;
+    if(bot && CHAT_ID) await bot.sendMessage(CHAT_ID, msg).catch(()=>{});
+    console.log('Order Received:', orderData);
+  } catch(e){ console.log(e.message) }
+}
     // Telegram
     await bot.sendMessage(CHAT_ID, msg);
     
