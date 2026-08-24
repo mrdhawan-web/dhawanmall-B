@@ -1,82 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dhawan Mart - LALSOT</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dhawan Mart 1-99000</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter}body{background:#f1f5f9}
-.header{background:#2874f0;color:#fff;padding:12px 15px;display:flex;gap:10px;align-items:center;position:sticky;top:0;z-index:10}
-.dm{width:36px;height:36px;border:1.5px solid #fff;border-radius:50%;display:grid;place-items:center;font-weight:800}
-.searchbar{padding:8px;background:#2874f0}.searchbar div{background:#fff;display:flex;gap:10px;padding:10px 14px;border-radius:8px}.searchbar input{border:none;flex:1;outline:none;font-size:15px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#fff;border-radius:12px;padding:10px;box-shadow:0 1px 3px rgba(0,0,0,.1)}.card img{width:100%;height:110px;object-fit:contain}.add{border:1.5px solid #2874f0;color:#2874f0;background:#fff;padding:5px 14px;border-radius:6px;font-weight:700}
-#loginModal,#checkModal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:99;padding:15px}
-.box{background:#fff;width:100%;max-width:390px;border-radius:16px;padding:18px;max-height:90vh;overflow-y:auto}
-.box input,.box textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:8px;outline:none}
-.btn{width:100%;background:#2874f0;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:800;margin-top:8px;cursor:pointer}
-.payOpt{display:flex;gap:10px;margin:10px 0}.payOpt div{flex:1;border:1.5px solid #ddd;padding:10px;border-radius:8px;text-align:center;cursor:pointer;font-weight:600}.payOpt.active{border-color:#2874f0;background:#eef4ff;color:#2874f0}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 22px;border-radius:22px;display:none;z-index:999}
-.qtyBox{display:flex;gap:12px;align-items:center;margin:10px 0;background:#f8fafc;padding:8px 12px;border-radius:8px}.qtyBox button{width:32px;height:32px;border:1px solid #ddd;background:#fff;border-radius:6px;font-weight:800}
+#toast{position:fixed;top:15px;right:15px;z-index:9999}
+.toast{padding:10px 16px;border-radius:8px;color:#fff;margin:5px;font-weight:600}
+.success{background:#16a34a} .error{background:#dc2626}
+.card{background:#fff;border-radius:10px;padding:10px;margin:8px}
 </style>
-</head>
-<body>
-<div class="header"><div class="dm">DM</div><b>Dhawan Mart</b><div style="margin-left:auto" onclick="openLogin()"><i class="fa-solid fa-user"></i> <span id="uNum">Login</span></div></div>
-<div class="searchbar"><div><i class="fa-solid fa-magnifying-glass" style="color:#888"></i><input id="sBox" placeholder="Search products" oninput="doSearch()"></div></div>
-<div class="grid" id="grid">Loading products...</div>
-
-<div id="loginModal" onclick="if(event.target==this)closeLogin()"><div class="box"><h3>Login with OTP</h3><input id="phone" placeholder="Mobile Number - 10 digit" type="tel"><div id="otpArea" style="display:none"><input id="otpInp" placeholder="Enter 6 digit OTP"><button class="btn" onclick="verifyOtp()">Verify OTP</button></div><button class="btn" id="sendBtn" onclick="sendOtp()">Send OTP</button><p style="font-size:11px;color:#666;margin-top:8px">Demo: Console me OTP dikhega agar Fast2SMS key nahi hai</p></div></div>
-
-<div id="checkModal"><div class="box">
-<h3 id="cProd">Product Name</h3><p id="cPrice" style="color:#666;font-size:14px"></p>
-<div class="qtyBox"><span>Qty:</span><button onclick="qtyChange(-1)">-</button><b id="cQty">1</b><button onclick="qtyChange(1)">+</button><b style="margin-left:auto" id="cTotal">₹0</b></div>
-<input id="cName" placeholder="Your Name"><textarea id="cAddr" placeholder="Full Address - Haraiya, Basti, Ghar no. etc"></textarea>
-<div class="payOpt"><div id="payCOD" class="active" onclick="setPay('COD')">💵 Cash on Delivery</div><div id="payUPI" onclick="setPay('UPI Scanner')">📱 Online Pay</div></div>
-<div id="qrBox" style="display:none;text-align:center;border:1px dashed #2874f0;border-radius:12px;padding:12px;background:#f8fbff">
-<img id="qrImg" src="" style="width:190px;margin:0 auto;display:block;border-radius:8px;background:#fff;padding:6px">
-<p style="font-size:13px;color:#111;margin-top:6px">Scan & Pay <b>₹<span id="qrAmt">0</span></b> to</p><p style="font-size:12px;color:#2874f0;font-weight:800" id="upiShow"></p>
-<div style="margin-top:12px;text-align:left;background:#fff3cd;padding:10px;border-radius:8px;border:1px solid #ffe69c">
-<label style="font-size:13px;font-weight:700">📤 Please upload payment screenshot*</label>
-<input type="file" id="payShot" accept="image/*" style="margin-top:6px">
-</div>
-</div>
-<button class="btn" onclick="placeOrder()">Place Order</button>
-<button class="btn" style="background:#eee;color:#333" onclick="closeCheck()">Cancel</button>
-</div></div>
-
+</head><body>
 <div id="toast"></div>
+<h2>Dhawan Mart <small>1₹ - 99000₹</small></h2>
+<div id="userBox"></div>
+
+<div id="loginBox">
+<input id="cName" placeholder="Aapka Naam">
+<input id="cPhone" placeholder="10 digit Mobile">
+<input id="cPin" type="password" placeholder="4 Digit PIN" maxlength="4">
+<button onclick="login()">Continue</button>
+</div>
+
+<div id="products" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+
 <script>
-let all=[],curProd=null,qty=1,payMode='COD',userPhone=localStorage.getItem('dm_phone')||"";
-const UPI_ID="8764578505@ybl"; // <-- YAHAN APNI UPI ID DAAL DO JAISA - 7905xxxxxx@paytm
-if(userPhone)document.getElementById('uNum').innerText=userPhone;
-function toast(m){let t=document.getElementById('toast');t.innerText=m;t.style.display='block';setTimeout(()=>t.style.display='none',2800);}
-async function load(){try{let r=await fetch('/product.json?v='+Date.now());all=await r.json();render(all);}catch(e){document.getElementById('grid').innerHTML='product.json nahi mila';}}
-function render(l){document.getElementById('grid').innerHTML=l.map(p=>`<div class="card"><img src="${p.images?.[0]||''}"><h4 style="font-size:13px;height:32px;overflow:hidden;margin-top:6px">${p.name}</h4><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><b>₹${p.price}</b><button class="add" onclick="openCheck('${p.name.replace(/'/g,'')}','${p.price}')">ADD</button></div></div>`).join('');}
-function doSearch(){let q=document.getElementById('sBox').value.toLowerCase();render(all.filter(p=>p.name.toLowerCase().includes(q)));}
-function openLogin(){document.getElementById('loginModal').style.display='grid';}function closeLogin(){document.getElementById('loginModal').style.display='none';}
-async function sendOtp(){let ph=document.getElementById('phone').value;if(ph.length<10){toast('Sahi number dalo');return;}toast('OTP bhej rahe hai...');let res=await fetch('/api/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph})});if((await res.json()).success){document.getElementById('otpArea').style.display='block';document.getElementById('sendBtn').style.display='none';toast('OTP sent - console dekho');}}
-async function verifyOtp(){let ph=document.getElementById('phone').value;let otp=document.getElementById('otpInp').value;let res=await fetch('/api/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph,otp})});let d=await res.json();if(d.success){localStorage.setItem('dm_phone',ph);userPhone=ph;document.getElementById('uNum').innerText=ph;closeLogin();toast('Login Ho Gaya!');}else toast('Galat OTP');}
-function openCheck(name,price){if(!userPhone){openLogin();toast('Pehle Login karo');return;}curProd={name,price:parseInt(price)};qty=1;document.getElementById('cProd').innerText=name;updateTotal();document.getElementById('checkModal').style.display='grid';}
-function closeCheck(){document.getElementById('checkModal').style.display='none';}
-function qtyChange(d){qty=Math.max(1,qty+d);updateTotal();}
-function updateTotal(){document.getElementById('cQty').innerText=qty;document.getElementById('cTotal').innerText='₹'+(curProd.price*qty);document.getElementById('cPrice').innerText='₹'+curProd.price+' x '+qty;document.getElementById('qrAmt').innerText=curProd.price*qty; if(payMode=='UPI Scanner')genQR();}
-function setPay(m){payMode=m;document.getElementById('payCOD').classList.toggle('active',m=='COD');document.getElementById('payUPI').classList.toggle('active',m=='UPI Scanner');document.getElementById('qrBox').style.display=m=='UPI Scanner'?'block':'none';if(m=='UPI Scanner')genQR();}
-function genQR(){let amt=curProd.price*qty;document.getElementById('upiShow').innerText=UPI_ID;document.getElementById('qrAmt').innerText=amt;let upiLink=`upi://pay?pa=${UPI_ID}&pn=Dhawan Mart&am=${amt}&cu=INR`;document.getElementById('qrImg').src=`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;}
-async function placeOrder(){
- let name=document.getElementById('cName').value||'Customer';
- let addr=document.getElementById('cAddr').value;
- if(!addr){toast('Address likho');return;}
- if(payMode=='UPI Scanner' &&!document.getElementById('payShot').files[0]){toast('Payment ka screenshot upload karo');return;}
- let total=curProd.price*qty;
- let formData = new FormData();
- formData.append('product',curProd.name);formData.append('price',curProd.price);formData.append('qty',qty);formData.append('total',total);formData.append('customerName',name);formData.append('phone',userPhone);formData.append('address',addr);formData.append('payment',payMode);
- if(document.getElementById('payShot').files[0]) formData.append('screenshot', document.getElementById('payShot').files[0]);
- toast('Order bhej rahe hai...');
- let res = await fetch('/api/order',{method:'POST', body: formData});
- let data = await res.json();
- if(data.success){closeCheck();toast('Order #'+data.orderId+' Placed!');}
+function toast(m,t){let d=document.createElement('div');d.className='toast '+t;d.innerText=m;document.getElementById('toast').appendChild(d);setTimeout(()=>d.remove(),3000)}
+
+function login(){
+ let n=cName.value.trim(), ph=cPhone.value.trim(), pin=cPin.value.trim();
+ if(n.length<2) return toast('Naam likho','error');
+ if(!/^[6-9]\d{9}$/.test(ph)) return toast('Sahi number dalo','error');
+ if(!/^\d{4}$/.test(pin)) return toast('4 digit PIN','error');
+ let key='dm_'+ph, old=localStorage.getItem(key);
+ if(old){ if(JSON.parse(old).pin!==pin) return toast('Galat PIN','error'); }
+ else { localStorage.setItem(key,JSON.stringify({name:n,phone:ph,pin:pin})); toast('Account ban gaya +50 Points','success'); }
+ localStorage.setItem('dm_cur',ph); showUser();
 }
-load();
+function showUser(){
+ let ph=localStorage.getItem('dm_cur'); if(!ph) return;
+ let u=JSON.parse(localStorage.getItem('dm_'+ph));
+ document.getElementById('userBox').innerHTML=`<div class="card"><b>${u.name}</b> - ${u.phone} <button onclick="logout()">Logout</button></div>`;
+ document.getElementById('loginBox').style.display='none';
+}
+function logout(){localStorage.removeItem('dm_cur');location.reload()}
+
+// 1 to 99000 Products - abhi demo, kal sheet se ayenge
+const demo=[
+ {name:'Toffee 1Rs',price:1,mrp:1,img:'https://via.placeholder.com/150'},
+ {name:'Parle-G 5Rs',price:5,mrp:5,img:'https://via.placeholder.com/150'},
+ {name:'iPhone 15',price:70999,mrp:79900,img:'https://via.placeholder.com/150?text=iPhone'},
+ {name:'LED TV 55"',price:42000,mrp:99000,img:'https://via.placeholder.com/150?text=TV'},
+];
+document.getElementById('products').innerHTML=demo.map(p=>`
+ <div class="card"><img src="${p.img}" width="100%"><br>${p.name}<br>
+ <b style="color:green">₹${p.price}</b> <s>₹${p.mrp}</s><br>
+ <button onclick="order('${p.name}',${p.price})">Add to Cart</button></div>
+`).join('');
+
+async function order(name,price){
+ let ph=localStorage.getItem('dm_cur'); let u=JSON.parse(localStorage.getItem('dm_'+ph));
+ toast(name+' Added','success');
+ // Safe call - token backend me hai
+ fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:u,product:name,price})});
+}
+showUser();
 </script>
 </body>
 </html>
