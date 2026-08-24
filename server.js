@@ -1,30 +1,18 @@
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
-require('dotenv').config();
-
-const app = express();
-const PORT = process.env.PORT || 10000;
-
-app.use(cors());
+import express from 'express';
+const app=express();
 app.use(express.json());
-app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('.'));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-app.post('/api/order', async (req, res) => {
-  try {
-    const data = req.body;
-    console.log("New Order:", data);
-    res.json({ success: true, message: "Order received" });
-  } catch (e) {
-    res.status(500).json({ success: false });
+app.post('/api/order', async (req,res)=>{
+  const {customer,product,price}=req.body;
+  const BOT=process.env.BOT_TOKEN;
+  const CHAT=process.env.CHAT_ID;
+  if(BOT && CHAT){
+    await fetch(`https://api.telegram.org/bot${BOT}/sendMessage`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:CHAT,text:`🛒 Order: ${customer.name} ${customer.phone}\n${product} ₹${price}`})
+    });
   }
+  res.json({ok:true});
 });
-
-app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
-});
+app.listen(process.env.PORT||3000);
