@@ -7,7 +7,7 @@
 <div id="products" class="grid"></div>
 <div id="cartDrawer"><h3>Cart <span style="float:right;cursor:pointer" onclick="closeCart()">X</span></h3><br><div id="cartItems"></div><br><input id="addr" placeholder="Full Address + Pincode" style="width:95%;padding:8px"><br><br>Total: <b id="cTotal">₹0</b><br><br><button class="btn btn2" onclick="checkout()">Place Secure Order</button></div>
 <script>
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vYOUR_ID_HERE/pub?output=csv";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1xdVlcU-AZsWrduaNkB8fTfeC53iIl6xhxJVFFFTIIQQ/edit?usp=drivesdk";
 let ALL=[], CART=[];
 const safeText = (s) => { let d=document.createElement('div'); d.innerText=s; return d.innerHTML; };
 function toast(m,t){let d=document.createElement('div');d.className='toast '+t;d.innerText=m;document.getElementById('toast').appendChild(d);setTimeout(()=>d.remove(),2500)}
