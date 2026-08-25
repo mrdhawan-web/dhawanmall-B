@@ -1,45 +1,67 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dhawan Mart Secure</title>
-<style>/* same amazon style */ *{margin:0;font-family:Arial}.header{background:#131921;color:#fff;padding:10px;display:flex;gap:8px;align-items:center;position:sticky;top:0;z-index:99}.search{flex:1;display:flex}.search input{flex:1;padding:10px;border:none;border-radius:4px 0 0 4px}.search button{padding:10px;background:#febd69;border:none;border-radius:0 4px 4px 0}.cartBtn{background:#232f3e;padding:8px 12px;border-radius:5px;color:#fff;border:1px solid #fff}#toast{position:fixed;top:10px;right:10px;z-index:999}.toast{padding:10px;border-radius:8px;color:#fff;margin:4px}.success{background:#16a34a}.error{background:#dc2626}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px;background:#e3e6e6}@media(min-width:768px){.grid{grid-template-columns:repeat(4,1fr)}}.card{background:#fff;padding:10px;border-radius:8px;text-align:center}.card img{width:100%;height:150px;object-fit:contain}.price{color:#B12704;font-weight:bold}.mrp{color:gray;text-decoration:line-through;font-size:12px}.btn{width:100%;background:#ffd814;border:none;padding:8px;border-radius:20px;margin-top:5px}.btn2{background:#ff8c00;color:#fff}#cartDrawer{position:fixed;right:0;top:0;width:330px;height:100%;background:#fff;z-index:200;display:none;padding:15px;overflow:auto;box-shadow:-2px 0 10px #0003}.loginCard{background:#fff;padding:12px;margin:10px;border-radius:8px}</style>
-</head><body><div id="toast"></div>
-<div class="header"><b>Dhawan Mart</b><div class="search"><input id="searchBox" placeholder="Search 1 to 99000" onkeyup="filter()"><button onclick="filter()">🔍</button></div><div class="cartBtn" onclick="openCart()">Cart <span id="cCount">0</span></div></div>
-<div id="userBox"></div>
-<div id="loginBox" class="loginCard"><h3>Secure Login</h3><input id="cName" placeholder="Name" style="width:95%;padding:8px;margin:5px 0"><br><input id="cPhone" placeholder="Mobile" style="width:95%;padding:8px;margin:5px 0"><br><input id="cPin" type="password" placeholder="4 Digit PIN" maxlength="4" style="width:95%;padding:8px;margin:5px 0"><br><button class="btn btn2" onclick="login()">Login</button></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhawan Mall - Upto 90% OFF</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#e3e6e6}
+.header{background:#131921;color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100}
+.logo{font-weight:900;font-size:20px;white-space:nowrap}
+.search{flex:1;display:flex;height:40px}
+.search input{flex:1;padding:0 10px;border:none;border-radius:4px 0 0 4px;outline:none;font-size:14px}
+.search button{width:50px;background:#febd69;border:none;border-radius:0 4px 4px 0;font-size:18px}
+.cart{background:#131921;color:#fff;border:1px solid #fff;padding:6px 10px;border-radius:4px}
+.nav{background:#232f3e;color:#fff;padding:8px 12px;font-size:14px;display:flex;gap:15px;overflow:auto;white-space:nowrap}
+.banner{background:linear-gradient(90deg,#ff8a00,#ffc400);padding:10px;text-align:center;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:8px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:#fff;padding:10px;border-radius:8px;display:flex;flex-direction:column}
+.card img{width:100%;height:160px;object-fit:contain;background:#fff}
+.title{font-size:13px;margin:6px 0;height:32px;overflow:hidden;line-height:16px}
+.mrp{font-size:12px;color:#565959;text-decoration:line-through}
+.price{color:#B12704;font-weight:bold;font-size:16px}
+.offer{color:#067d62;font-size:12px;font-weight:bold}
+.btn{margin-top:auto;background:#ffd814;border:1px solid #fcd200;padding:8px;border-radius:20px;font-size:13px;cursor:pointer}
+.btn:active{background:#f7ca00}
+#loading{text-align:center;padding:40px;font-size:18px}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">Dhawan Mall</div>
+<div class="search"><input id="sBox" type="text" placeholder="Search Dhawan Mall" onkeyup="doSearch()"><button onclick="doSearch()">🔍</button></div>
+<button class="cart" onclick="openCart()">Cart (<span id="cCount">0</span>)</button>
+</div>
+<div class="nav"><span>All</span><span>Mobiles</span><span>Fashion</span><span>Electronics</span><span>Deals</span></div>
+<div class="banner">🔥 Festival Sale - 1 Rs to 99000 Rs Products Live 🔥</div>
+<div id="loading">Loading Products...</div>
 <div id="products" class="grid"></div>
-<div id="cartDrawer"><h3>Cart <span style="float:right;cursor:pointer" onclick="closeCart()">X</span></h3><br><div id="cartItems"></div><br><input id="addr" placeholder="Full Address + Pincode" style="width:95%;padding:8px"><br><br>Total: <b id="cTotal">₹0</b><br><br><button class="btn btn2" onclick="checkout()">Place Secure Order</button></div>
+
 <script>
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1xdVlcU-AZsWrduaNkB8fTfeC53iIl6xhxJVFFFTIIQQ/edit?usp=drivesdk";
-let ALL=[], CART=[];
-const safeText = (s) => { let d=document.createElement('div'); d.innerText=s; return d.innerHTML; };
-function toast(m,t){let d=document.createElement('div');d.className='toast '+t;d.innerText=m;document.getElementById('toast').appendChild(d);setTimeout(()=>d.remove(),2500)}
-function login(){
- let n=cName.value.trim(), ph=cPhone.value.trim(), pin=cPin.value.trim();
- if(n.length<2) return toast('Name','error'); if(!/^[6-9]\d{9}$/.test(ph)) return toast('Mobile','error'); if(!/^\d{4}$/.test(pin)) return toast('4 digit PIN','error');
- let k='dm_'+ph, old=localStorage.getItem(k);
- let enc=btoa(pin); // base64 encode for basic safety
- if(old && JSON.parse(old).pin!==enc) return toast('Wrong PIN','error');
- if(!old) localStorage.setItem(k, JSON.stringify({name:n,phone:ph,pin:enc}));
- localStorage.setItem('dm_cur',ph); showUser(); toast('Welcome','success');
+// TUMHARI SHEET LINK - FINAL
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1xdVlcU-AZsWrduaNkB8fTfeC53iIl6xhxJVFFFTIIQQ/export?format=csv";
+
+let ALL_PRODUCTS = [];
+let CART = [];
+
+function parseCSV(text){
+  // "Name, with comma" ko handle karega
+  let rows = [];
+  let row = []; let cur = ""; let inQuote = false;
+  for(let i=0;i<text.length;i++){
+    let c = text[i];
+    if(c=='"'){ inQuote=!inQuote; continue; }
+    if(c==',' &&!inQuote){ row.push(cur); cur=""; continue; }
+    if(c=='\n' &&!inQuote){ row.push(cur); rows.push(row); row=[]; cur=""; continue; }
+    cur+=c;
+  }
+  if(cur) { row.push(cur); rows.push(row); }
+  return rows;
 }
-function showUser(){ let ph=localStorage.getItem('dm_cur'); if(!ph) return; let u=JSON.parse(localStorage.getItem('dm_'+ph)); userBox.innerHTML=`<div class="loginCard">Hi, ${safeText(u.name)} <button onclick="localStorage.removeItem('dm_cur');location.reload()">Logout</button></div>`; loginBox.style.display='none';}
-function openCart(){cartDrawer.style.display='block'; renderCart()} function closeCart(){cartDrawer.style.display='none'}
-async function load(){
- try{ let r=await fetch(SHEET_CSV_URL); let t=await r.text(); let rows=t.split('\n').slice(1);
-  ALL=rows.map(row=>{ let c=row.split(','); if(c.length<2) return null; let pr=parseInt(c[1]); if(!(pr>=1 && pr<=99000)) return null; return {name:c[0].trim(), price:pr, mrp:parseInt(c[2]||pr), img:c[3]||`https://via.placeholder.com/200?text=${encodeURIComponent(c[0])}`};}).filter(Boolean);
- }catch(e){ ALL=[{name:'Demo 1Rs Toffee',price:1,mrp:2,img:'https://via.placeholder.com/200?text=Toffee'}]; }
- render(ALL);
-}
-function render(list){ products.innerHTML=list.map(p=>`<div class="card"><img src="${safeText(p.img)}"><br><b>${safeText(p.name)}</b><br><span class="price">₹${p.price}</span> <span class="mrp">₹${p.mrp}</span><br><button class="btn" onclick="addCart('${safeText(p.name)}',${p.price})">Add to Cart</button></div>`).join('');}
-function filter(){ let q=searchBox.value.toLowerCase(); render(ALL.filter(p=>p.name.toLowerCase().includes(q))); }
-function addCart(name,price){ CART.push({name,price}); cCount.innerText=CART.length; toast(name+' Added','success'); renderCart();}
-function renderCart(){ let tot=0; cartItems.innerHTML=CART.map(p=>{tot+=p.price; return `<div>${safeText(p.name)} - ₹${p.price}</div>`}).join(''); cTotal.innerText='₹'+tot; }
-async function checkout(){
- let ph=localStorage.getItem('dm_cur'); if(!ph) return toast('Login','error');
- let u=JSON.parse(localStorage.getItem('dm_'+ph)); let address=addr.value.trim(); if(address.length<10) return toast('Address','error');
- let total=CART.reduce((s,p)=>s+p.price,0);
- let res=await fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer:{name:u.name,phone:u.phone,address},products:CART,total})});
- if(res.ok){ toast('Order Placed Securely','success'); CART=[]; cCount.innerText=0; closeCart();} else toast('Failed - Try again','error');
-}
-showUser(); load();
-</script>
-</body>
-</html>
+
+async function loadProducts(){
+  try{
+    let res = await fetch(SHEET_CSV_URL);
+    if(!res.ok
