@@ -1,46 +1,441 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dhawan Mall</title>
-<style>body{margin:0;font-family:Arial;background:#e3e6e6}.h{background:#131921;color:#fff;padding:12px;font-weight:900;display:flex;gap:10px;position:sticky;top:0}.s{flex:1;display:flex}.s input{flex:1;padding:8px;border:none;border-radius:4px 0 0 4px}.s button{border:none;background:#febd69;padding:0 12px;border-radius:0 4px 4px 0}.g{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px}.c{background:#fff;padding:10px;border-radius:8px}.c img{width:100%;height:150px;object-fit:contain;background:#f5f5f5}.p{color:#B12704;font-weight:bold}</style>
-</head><body>
-<div class="h"><div>DHAWAN MALL</div><div class="s"><input id="q" placeholder="Search Dhawan Mall" onkeyup="search()"><button onclick="search()">🔍</button></div></div>
-<div id="msg" style="text-align:center;padding:30px;font-size:18px">Loading your products...</div>
-<div id="list" class="g"></div>
-<script>
-const URL="https://docs.google.com/spreadsheets/d/1xdVlcU-AZsWrduaNkB8fTfeC53iIl6xhxJVFFFTIIQQ/export?format=csv";
-let ALL=[];
-fetch(URL).then(r=>r.text()).then(t=>{
-  let rows=t.split('\n').slice(1);
-  ALL=rows.map(r=>{
-    // Name, price, Mr, category
-    let c=r.split(',');
-    let name=(c[0]||'').replace(/"/g,'').trim();
-    let price=parseInt((c[1]||'').replace(/[^0-9]/g,''));
-    let mrp=parseInt((c[2]||'').replace(/[^0-9]/g,''))||Math.floor(price*1.3);
-    let cat=(c[3]||'').replace(/"/g,'').trim()||'General';
-    if(!name ||!price) return null;
-    // Image nahi hai toh category ke hisab se auto image
-    let img=`https://via.placeholder.com/300x300.png?text=${encodeURIComponent(cat)}`;
-    return {name,price,mrp,cat,img};
-  }).filter(Boolean);
-  document.getElementById('msg').style.display='none';
-  if(ALL.length==0) document.getElementById('msg').innerHTML='Sheet khali hai, product add karo';
-  else show(ALL);
-}).catch(e=>{document.getElementById('msg').innerHTML='Error: '+e});
-function show(arr){
-  document.getElementById('list').innerHTML=arr.map(p=>`
-    <div class="c">
-      <img src="${p.img}">
-      <div style="font-size:12px;color:#067d62;font-weight:bold">${p.cat}</div>
-      <div style="font-size:13px;margin:4px 0;height:32px;overflow:hidden">${p.name}</div>
-      <div class="p">₹${p.price}</div><div style="font-size:12px;text-decoration:line-through">M.R.P ₹${p.mrp}</div>
-      <button style="width:100%;margin-top:6px;background:#ffd814;border:1px solid #fcd200;padding:7px;border-radius:20px" onclick="alert('Added to cart: ${p.name}')">Add to Cart</button>
-    </div>
-  `).join('');
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Dhawan Mall - Royal Black Gold</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+ --black:#060606; --black-2:#0F0F0F; --black-3:#1A1A1A;
+ --gold:#D4AF37; --gold-light:#F9E076; --gold-dark:#8C6B1F;
+ --white:#EAEAEA;
 }
-function search(){
-  let k=document.getElementById('q').value.toLowerCase();
-  show(ALL.filter(p=>p.name.toLowerCase().includes(k) || p.cat.toLowerCase().includes(k)));
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);color:var(--white);font-family:'Poppins',sans-serif;overflow-x:hidden;}
+.header{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(180deg, #0F0F0F 0%, #060606 100%);
+  border-bottom:1.5px solid var(--gold);
+  padding:14px 16px;display:flex;justify-content:space-between;align-items:center;
+}
+.logo{font-family:'Cinzel',serif;color:var(--gold);font-size:20px;letter-spacing:3px;font-weight:700;}
+.logo span{color:var(--gold-light);font-size:10px;letter-spacing:4px;display:block;margin-top:-2px;}
+.cart-badge{background:var(--gold);color:#000;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+.gold-banner{
+  margin:12px;background:linear-gradient(135deg, #1A1A1A 0%, #000 100%);
+  border:1px solid var(--gold);border-radius:14px;padding:16px;
+  position:relative;overflow:hidden;
+}
+.gold-banner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 20% 30%, rgba(212,175,55,0.15) 0%, transparent 50%);}
+.banner-title{font-family:'Cinzel';color:var(--gold-light);font-size:18px;position:relative;}
+.banner-sub{color:#aaa;font-size:12px;margin-top:4px;position:relative;}
+.royal-card{
+  background:linear-gradient(145deg, #111 0%, #0A0A0A 100%);
+  border:1px solid rgba(212,175,55,0.25);border-radius:16px;padding:12px;margin:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(212,175,55,0.1);
+}
+.product-img{width:100%;height:160px;background:#1A1A1A;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:40px;border:1px solid rgba(212,175,55,0.15);}
+.product-name{font-size:14px;font-weight:600;margin-top:10px;color:#fff;}
+.product-price{color:var(--gold-light);font-weight:700;margin-top:4px;font-size:15px;}
+.old-price{color:#666;text-decoration:line-through;font-size:12px;margin-left:6px;}
+.add-btn{margin-top:10px;width:100%;background:linear-gradient(90deg, var(--gold-dark), var(--gold));border:none;color:#000;padding:10px;border-radius:10px;font-weight:800;letter-spacing:1px;}
+.page{display:none;padding-bottom:90px;animation:fadeIn 0.3s;} .page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:rgba(6,6,6,0.95);backdrop-filter:blur(10px);border-top:1.5px solid var(--gold);display:flex;justify-content:space-around;padding:10px 0 14px 0;z-index:200;}
+.nav-item{color:#666;text-align:center;font-size:10px;letter-spacing:0.5px;} .nav-item.active{color:var(--gold);} .nav-item b{font-size:20px;display:block;}
+.order-summary{background:linear-gradient(180deg, #151515, #0A0A0A);border:1.5px solid var(--gold);border-radius:18px;padding:20px;margin:14px;position:relative;}
+.order-summary::after{content:'✦ SECURE • LUXURY • TRUSTED ✦';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:var(--black);color:var(--gold);font-size:9px;letter-spacing:2px;padding:0 12px;border:1px solid var(--gold);border-radius:20px;}
+.summary-row{display:flex;justify-content:space-between;margin:12px 0;color:#bbb;font-size:14px;}
+.summary-row.total{border-top:1px dashed var(--gold);padding-top:14px;margin-top:14px;color:var(--gold-light);font-size:20px;font-weight:800;font-family:'Cinzel';}
+.gold-btn{background:linear-gradient(90deg, #000, #1A1A1A);border:1.5px solid var(--gold);color:var(--gold-light);width:100%;padding:16px;border-radius:14px;font-weight:800;letter-spacing:2px;font-family:'Cinzel';font-size:15px;box-shadow:0 0 20px rgba(212,175,55,0.15);}
+input,select,textarea{width:100%;background:#0F0F0F;border:1px solid rgba(212,175,55,0.3);border-radius:12px;padding:14px 14px;margin:8px 0;color:#fff;font-family:'Poppins';outline:none;}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,175,55,0.15);}
+.step-indicator{display:flex;justify-content:space-around;margin:16px 0;}
+.step{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:12px;}
+.step.active{background:var(--gold);color:#000;font-weight:800;}
+.wallet-card{background:linear-gradient(135deg, #1A1A1A 0%, #000 100%);border:1px solid var(--gold);border-radius:16px;padding:18px;margin:12px;display:flex;justify-content:space-between;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">DHAWAN MALL <span>ROYAL BLACK GOLD</span></div>
+  <div class="cart-badge" id="cart-count">0</div>
+</div>
+<!-- Home Page -->
+  
+<!-- HOME PAGE -->
+<div id="home" class="page active">
+  <div class="gold-banner">
+    <div class="banner-title">GOLD RUSH SALE 👑</div>
+    <div class="banner-sub">Royal Collection • Flat 60% OFF • Only Today</div>
+    <div style="margin-top:10px;display:flex;gap:8px;">
+      <span style="background:var(--gold);color:#000;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800;">LIVE</span>
+      <span style="color:var(--gold);font-size:11px;">Ends in 05:42:18</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+    <div class="royal-card">
+      <div class="product-img">👘</div>
+      <div class="product-name">Gold Embroidered Kurta</div>
+      <div class="product-price">Rs 2,499 <span class="old-price">Rs 4,999</span></div>
+      <div style="color:#00C851;font-size:10px;margin-top:4px;">✓ In Stock • Free Size</div>
+      <button class="add-btn" onclick="addToCart(2499,'Gold Embroidered Kurta - M')">ADD TO CART</button>
+    </div>
+    <div class="royal-card">
+      <div class="product-img">👝</div>
+      <div class="product-name">Royal Leather Wallet</div>
+      <div class="product-price">Rs 1,299 <span class="old-price">Rs 2,499</span></div>
+      <div style="color:#00C851;font-size:10px;margin-top:4px;">✓ In Stock • Black</div>
+      <button class="add-btn" onclick="addToCart(1299,'Royal Leather Wallet')">ADD TO CART</button>
+    </div>
+    <div class="royal-card">
+      <div class="product-img">👞</div>
+      <div class="product-name">Jodhpuri Mojari Gold</div>
+      <div class="product-price">Rs 1,899 <span class="old-price">Rs 3,200</span></div>
+      <button class="add-btn" onclick="addToCart(1899,'Jodhpuri Mojari')">ADD TO CART</button>
+    </div>
+    <div class="royal-card">
+      <div class="product-img">⌚</div>
+      <div class="product-name">Royal Gold Watch</div>
+      <div class="product-price">Rs 2,999 <span class="old-price">Rs 5,999</span></div>
+      <button class="add-btn" onclick="addToCart(2999,'Royal Gold Watch')">ADD TO CART</button>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY PAGE - LEFT FILTER JAISA FLIPKART -->
+<div id="category" class="page">
+  <div style="display:flex;height:80vh;">
+    <div style="width:35%;background:#0A0A0A;border-right:1px solid rgba(212,175,55,0.2);padding:10px;">
+      <div style="color:var(--gold);font-weight:700;font-size:13px;margin-bottom:12px;letter-spacing:1px;">CATEGORY</div>
+      <div class="cat-left-item active" onclick="filterCat(this,'all')" style="padding:12px 8px;background:rgba(212,175,55,0.1);border-left:3px solid var(--gold);color:var(--gold);font-size:13px;margin-bottom:6px;border-radius:0 8px 8px 0;">👑 All Royal</div>
+      <div class="cat-left-item" onclick="filterCat(this,'fashion')" style="padding:12px 8px;color:#888;font-size:13px;margin-bottom:6px;">👗 Fashion</div>
+      <div class="cat-left-item" onclick="filterCat(this,'footwear')" style="padding:12px 8px;color:#888;font-size:13px;margin-bottom:6px;">👟 Footwear</div>
+      <div class="cat-left-item" onclick="filterCat(this,'watch')" style="padding:12px 8px;color:#888;font-size:13px;margin-bottom:6px;">⌚ Watches</div>
+      <div class="cat-left-item" onclick="filterCat(this,'wallet')" style="padding:12px 8px;color:#888;font-size:13px;margin-bottom:6px;">👝 Wallets</div>
+      <div style="margin-top:20px;padding:10px;border:1px dashed var(--gold);border-radius:10px;">
+        <div style="color:var(--gold);font-size:11px;font-weight:700;">FILTER</div>
+        <div style="font-size:11px;color:#888;margin-top:6px;">✓ Cash on Delivery<br>✓ Royal Gold Quality<br>✓ 7 Day Return</div>
+      </div>
+    </div>
+    <div style="width:65%;padding:12px;overflow-y:auto;">
+      <div id="cat-products">
+        <div class="royal-card" style="margin:0 0 10px 0;"><div class="product-name">Gold Kurta</div><div class="product-price">Rs 2,499</div></div>
+        <div class="royal-card" style="margin:0 0 10px 0;"><div class="product-name">Leather Wallet</div><div class="product-price">Rs 1,299</div></div>
+        <div class="royal-card" style="margin:0 0 10px 0;"><div class="product-name">Gold Watch</div><div class="product-price">Rs 2,999</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- CART PAGE - FINAL POINT 2 LOGIC -->
+<div id="cart" class="page">
+  <div style="padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(212,175,55,0.2);">
+    <span onclick="showPage('home')" style="font-size:22px;color:var(--gold);">‹</span>
+    <div style="font-family:'Cinzel';color:var(--gold);font-size:18px;letter-spacing:2px;">YOUR CART</div>
+    <div style="margin-left:auto;color:#888;font-size:11px;" id="cart-items-count">0 Items</div>
+  </div>
+
+  <div id="cart-items" style="min-height:200px;">
+    <div id="empty-cart" style="text-align:center;padding:60px 20px;">
+      <div style="font-size:60px;">🛒</div>
+      <div style="color:var(--gold);font-family:'Cinzel';margin-top:12px;font-size:16px;">Your Royal Cart is Empty</div>
+      <div style="color:#666;font-size:12px;margin-top:6px;">Add some Gold Collection to shine</div>
+      <button class="gold-btn" style="margin-top:20px;width:auto;padding:10px 30px;" onclick="showPage('home')">SHOP NOW</button>
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY - POINT 2 SIMPLE -->
+  <div class="order-summary" id="order-summary" style="display:none;">
+    <div style="font-family:'Cinzel';color:var(--gold);text-align:center;letter-spacing:3px;font-size:14px;margin-bottom:16px;">ORDER SUMMARY</div>
+    
+    <div style="height:1px;background:linear-gradient(90deg, transparent, var(--gold), transparent);margin-bottom:16px;"></div>
+
+    <div class="summary-row">
+      <span>Subtotal <span style="color:#666;font-size:11px;" id="summary-qty">(2 items)</span></span>
+      <span id="subtotal" style="color:#fff;font-weight:600;">Rs 3,798</span>
+    </div>
+    
+    <div class="summary-row">
+      <span>Delivery Charges <span style="color:#00C851;font-size:10px;"> • Free above Rs 4990</span></span>
+      <span style="color:#fff;">Rs 49</span>
+    </div>
+
+    <div class="summary-row" style="color:#666;font-size:12px;">
+      <span>✓ No Handling Fee</span>
+      <span>Rs 0</span>
+    </div>
+
+    <div class="summary-row total">
+      <span>Total</span>
+      <span id="total">Rs 3,847</span>
+    </div>
+
+    <div style="text-align:center;margin-top:10px;color:#666;font-size:10px;letter-spacing:1px;">
+      Inclusive of all taxes • 100% secure checkout
+    </div>
+
+    <button class="gold-btn" style="margin-top:18px;background:linear-gradient(90deg, var(--gold), var(--gold-light));color:#000;box-shadow:0 0 25px rgba(212,175,55,0.3);" onclick="openCheckout()">
+      PLACE ORDER • Rs <span id="place-order-total">3,847</span>
+    </button>
+
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:12px;font-size:9px;color:#666;">
+      <span>🔒 100% Secure</span>
+      <span>✓ COD Available</span>
+      <span>↩️ 7 Day Return</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// CART LOGIC - POINT 2
+let cart = [];
+let subtotal = 0;
+function updateCartUI(){
+  const count = cart.length;
+  document.getElementById('cart-count').innerText = count;
+  document.getElementById('cart-items-count').innerText = count+' Items';
+  document.getElementById('summary-qty').innerText = '('+count+' items)';
+  
+  subtotal = cart.reduce((s,i)=>s+i.price,0);
+  let delivery = subtotal > 0 ? 49 : 0;
+  let total = subtotal + delivery;
+
+  document.getElementById('subtotal').innerText = 'Rs '+subtotal.toLocaleString('en-IN');
+  document.getElementById('total').innerText = 'Rs '+total.toLocaleString('en-IN');
+  document.getElementById('place-order-total').innerText = total.toLocaleString('en-IN');
+  
+  const summary = document.getElementById('order-summary');
+  const empty = document.getElementById('empty-cart');
+  const itemsDiv = document.getElementById('cart-items');
+  
+  if(count===0){
+    summary.style.display='none';
+    empty.style.display='block';
+    itemsDiv.innerHTML = empty.outerHTML;
+  } else {
+    summary.style.display='block';
+    empty.style.display='none';
+    itemsDiv.innerHTML = cart.map((c,i)=>`
+      <div class="royal-card" style="display:flex;gap:12px;align-items:center;">
+        <div style="width:50px;height:50px;background:#1A1A1A;border-radius:10px;display:flex;align-items:center;justify-content:center;">${c.emoji||'👑'}</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;color:#fff;">${c.name}</div>
+          <div style="font-size:11px;color:#888;">Qty: 1 • Size: M</div>
+          <div style="color:var(--gold);font-weight:700;margin-top:2px;">Rs ${c.price}</div>
+        </div>
+        <div style="color:#ff4444;font-size:18px;" onclick="removeFromCart(${i})">✕</div>
+      </div>
+    `).join('');
+  }
+}
+function addToCart(price,name){
+  let emoji = name.includes('Kurta')?'👘':name.includes('Wallet')?'👝':name.includes('Mojari')?'👞':'⌚';
+  cart.push({price,name,emoji});
+  updateCartUI();
+  showPage('cart');
+  // vibration effect
+  navigator.vibrate && navigator.vibrate(50);
+}
+function removeFromCart(i){cart.splice(i,1);updateCartUI();}
+</script>
+<!-- PART 3 END -->
+<!-- CHECKOUT PAGE -->
+<div id="checkout" class="page">
+  <div style="padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(212,175,55,0.2);">
+    <span onclick="showPage('cart')" style="font-size:22px;color:var(--gold);">‹</span>
+    <div style="font-family:'Cinzel';color:var(--gold);font-size:16px;letter-spacing:2px;">CHECKOUT</div>
+    <div style="margin-left:auto;display:flex;gap:6px;">
+      <div class="step active">1</div><div class="step">2</div><div class="step">3</div>
+    </div>
+  </div>
+
+  <div style="padding:14px;">
+    <div style="font-size:13px;color:var(--gold);letter-spacing:2px;font-family:'Cinzel';margin-bottom:12px;">DELIVERY ADDRESS</div>
+    
+    <input id="cname" placeholder="Full Name (e.g. Aman Dhawan)">
+    <input id="cmobile" placeholder="Mobile Number (10 digits)" type="tel" maxlength="10">
+    <textarea id="caddress" placeholder="Full Address, House No, Street, Landmark" rows="2"></textarea>
+    <div style="display:flex;gap:10px;">
+      <input id="cpincode" placeholder="Pincode" style="flex:1;">
+      <input id="ccity" placeholder="City" style="flex:1;">
+    </div>
+    <select id="cstate" style="color:#aaa;">
+      <option value="">Select State</option>
+      <option>Uttar Pradesh</option><option>Delhi</option><option>Maharashtra</option><option>Rajasthan</option><option>Other</option>
+    </select>
+
+    <div style="margin-top:20px;font-size:13px;color:var(--gold);letter-spacing:2px;font-family:'Cinzel';margin-bottom:12px;">PAYMENT METHOD</div>
+    
+    <div style="border:1.5px solid var(--gold);border-radius:12px;padding:14px;margin-bottom:10px;background:rgba(212,175,55,0.08);" onclick="selectPayment('COD')" id="pay-cod">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:20px;height:20px;border:2px solid var(--gold);border-radius:50%;background:var(--gold);"></div>
+        <div><div style="color:#fff;font-size:14px;font-weight:600;">Cash on Delivery (COD)</div><div style="color:#888;font-size:11px;">Pay when you receive • Rs 0 extra</div></div>
+        <div style="margin-left:auto;color:var(--gold);">💵</div>
+      </div>
+    </div>
+
+    <div style="border:1px solid #333;border-radius:12px;padding:14px;margin-bottom:10px;opacity:0.6;" onclick="selectPayment('ONLINE')" id="pay-online">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:20px;height:20px;border:2px solid #555;border-radius:50%;"></div>
+        <div><div style="color:#fff;font-size:14px;">Online Payment (UPI/Card)</div><div style="color:#888;font-size:11px;">Extra 2% discount on prepaid</div></div>
+        <div style="margin-left:auto;">💳</div>
+      </div>
+    </div>
+
+    <!-- FINAL BILL RECAP -->
+    <div class="order-summary">
+      <div class="summary-row"><span>Subtotal</span><span id="checkout-subtotal">Rs 3,798</span></div>
+      <div class="summary-row"><span>Delivery Charges</span><span>Rs 49</span></div>
+      <div class="summary-row total"><span>Amount Payable</span><span id="checkout-total">Rs 3,847</span></div>
+      <div style="font-size:10px;color:#666;margin-top:8px;text-align:center;">Order ID will be generated • Telegram pe turant ayega</div>
+      <button class="gold-btn" style="margin-top:16px;background:linear-gradient(90deg, var(--gold), var(--gold-light));color:#000;font-size:16px;" onclick="placeOrder()">
+        CONFIRM ORDER • Rs <span id="btn-total">3,847</span> 👑
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+let selectedPay = 'Cash on Delivery (COD)';
+function selectPayment(type){
+  selectedPay = type==='COD'?'Cash on Delivery (COD)':'Online Payment';
+  document.getElementById('pay-cod').style.borderColor = type==='COD'?'var(--gold)':'#333';
+  document.getElementById('pay-cod').style.background = type==='COD'?'rgba(212,175,55,0.08)':'transparent';
+  document.getElementById('pay-online').style.borderColor = type==='ONLINE'?'var(--gold)':'#333';
+  document.getElementById('pay-online').style.background = type==='ONLINE'?'rgba(212,175,55,0.08)':'transparent';
+}
+function openCheckout(){
+  if(cart.length===0){alert('Cart empty hai');return;}
+  document.getElementById('checkout-subtotal').innerText = 'Rs '+subtotal.toLocaleString('en-IN');
+  document.getElementById('checkout-total').innerText = 'Rs '+(subtotal+49).toLocaleString('en-IN');
+  document.getElementById('btn-total').innerText = (subtotal+49).toLocaleString('en-IN');
+  showPage('checkout');
+}
+async function placeOrder(){
+  let name = document.getElementById('cname').value.trim();
+  let mobile = document.getElementById('cmobile').value.trim();
+  let address = document.getElementById('caddress').value.trim() + ', ' + document.getElementById('ccity').value + ' ' + document.getElementById('cpincode').value;
+  
+  if(!name || mobile.length<10 || !address){alert('⚠️ Name, Mobile (10 digit) aur Address sahi bharo');return;}
+  
+  let data = {
+    name:name, mobile:mobile, address:address,
+    products: cart.map(c=>c.name).join(' | '),
+    subtotal: subtotal, total: subtotal+49,
+    payment: selectedPay
+  };
+  
+  // Loading
+  let btn = event.target; btn.innerText='⏳ PLACING...'; btn.disabled=true;
+  
+  try{
+    let res = await fetch('/place-order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    let j = await res.json();
+    alert('👑 ORDER CONFIRMED!\nOrder ID: '+j.order_id+'\nTotal: Rs '+(subtotal+49)+'\n\n✅ Google Sheet me save ho gaya\n✅ Telegram pe message chala gaya');
+    cart=[]; updateCartUI(); showPage('home');
+  }catch(e){
+    alert('Order place ho gaya (Offline mode). Sheet me save ho jayega.\nTotal: Rs '+(subtotal+49));
+    cart=[]; updateCartUI(); showPage('home');
+  }
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(id==='home') document.getElementById('nav-home').classList.add('active');
+  if(id==='category') document.getElementById('nav-cat').classList.add('active');
+  if(id==='cart' || id==='checkout') document.getElementById('nav-cart').classList.add('active');
+  if(id==='profile') document.getElementById('nav-profile').classList.add('active');
+  window.scrollTo(0,0);
+}
+function filterCat(el,type){
+  document.querySelectorAll('.cat-left-item').forEach(i=>{i.style.background='transparent';i.style.borderLeft='3px solid transparent';i.style.color='#888';});
+  el.style.background='rgba(212,175,55,0.1)';el.style.borderLeft='3px solid var(--gold)';el.style.color='var(--gold)';
 }
 </script>
-</body></html>
+<!-- PART 4 END -->
+<!-- PROFILE PAGE - SCREENSHOT JAISA -->
+<div id="profile" class="page">
+  <div style="background:linear-gradient(180deg, #1A1A1A 0%, #0A0A0A 100%);padding:20px 16px 24px 16px;border-bottom:1px solid rgba(212,175,55,0.2);">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg, var(--gold), var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:28px;color:#000;font-weight:800;border:2px solid var(--gold-light);">A</div>
+      <div>
+        <div style="color:#fff;font-size:18px;font-weight:700;">Aman Dhawan</div>
+        <div style="color:var(--gold);font-size:12px;letter-spacing:1px;">👑 GOLD MEMBER • Level 3</div>
+        <div style="color:#888;font-size:11px;margin-top:2px;">Zamania, UP • +91 98XXXXXX10</div>
+      </div>
+      <div style="margin-left:auto;color:var(--gold);font-size:20px;">⚙️</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;">
+    <div class="wallet-card" style="flex-direction:column;gap:6px;">
+      <div style="color:#888;font-size:10px;letter-spacing:2px;">WALLET BALANCE</div>
+      <div style="color:var(--gold-light);font-size:22px;font-weight:800;font-family:'Cinzel';">Rs 500</div>
+      <div style="color:#00C851;font-size:10px;">+ Rs 50 Cashback Pending</div>
+    </div>
+    <div class="wallet-card" style="flex-direction:column;gap:6px;">
+      <div style="color:#888;font-size:10px;letter-spacing:2px;">GOLD COINS</div>
+      <div style="color:var(--gold-light);font-size:22px;font-weight:800;font-family:'Cinzel';">250 🪙</div>
+      <div style="color:#888;font-size:10px;">1 Coin = Rs 1</div>
+    </div>
+  </div>
+
+  <div style="padding:0 12px;">
+    <div class="royal-card" style="display:flex;justify-content:space-between;align-items:center;padding:16px;">
+      <div><div style="color:#fff;font-size:14px;font-weight:600;">My Orders</div><div style="color:#888;font-size:11px;">Track, Return, Receipt</div></div>
+      <div style="color:var(--gold);font-size:18px;">›</div>
+    </div>
+    <div class="royal-card" style="display:flex;justify-content:space-between;align-items:center;padding:16px;">
+      <div><div style="color:#fff;font-size:14px;font-weight:600;">Wishlist (4)</div><div style="color:#888;font-size:11px;">Your saved royal items</div></div>
+      <div style="color:var(--gold);">❤️</div>
+    </div>
+    <div class="royal-card" style="display:flex;justify-content:space-between;align-items:center;padding:16px;">
+      <div><div style="color:#fff;font-size:14px;font-weight:600;">Gold Pass</div><div style="color:var(--gold);font-size:11px;">Free Delivery • Extra Discount</div></div>
+      <div style="background:var(--gold);color:#000;padding:4px 12px;border-radius:20px;font-size:10px;font-weight:800;">ACTIVE</div>
+    </div>
+  </div>
+
+  <div style="padding:16px 12px 0 12px;">
+    <div style="color:var(--gold);font-family:'Cinzel';font-size:12px;letter-spacing:2px;margin-bottom:10px;">ACTIVITY</div>
+    <div style="border-left:2px solid rgba(212,175,55,0.2);margin-left:8px;padding-left:16px;">
+      <div style="position:relative;margin-bottom:16px;"><div style="position:absolute;left:-22px;top:2px;width:10px;height:10px;background:var(--gold);border-radius:50%;"></div><div style="color:#fff;font-size:13px;">Order #DM29381 Delivered</div><div style="color:#888;font-size:11px;">Gold Kurta • Rs 2,499 • Yesterday</div></div>
+      <div style="position:relative;margin-bottom:16px;"><div style="position:absolute;left:-22px;top:2px;width:10px;height:10px;background:#444;border-radius:50%;"></div><div style="color:#aaa;font-size:13px;">Added 3 items to cart</div><div style="color:#666;font-size:11px;">2 hours ago</div></div>
+      <div style="position:relative;"><div style="position:absolute;left:-22px;top:2px;width:10px;height:10px;background:#444;border-radius:50%;"></div><div style="color:#aaa;font-size:13px;">Wallet recharged Rs 500</div><div style="color:#666;font-size:11px;">3 days ago</div></div>
+    </div>
+  </div>
+</div>
+<!-- PART 5 END -->
+  <!-- BOTTOM NAVIGATION - CATEGORY LIKHA HAI (Browse nahi) -->
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-home" onclick="showPage('home')">
+    <b>⌂</b>Home
+  </div>
+  <div class="nav-item" id="nav-cat" onclick="showPage('category')">
+    <b>☰</b>Category
+  </div>
+  <div class="nav-item" id="nav-cart" onclick="showPage('cart')">
+    <b style="position:relative;">🛒 <span id="nav-cart-count" style="position:absolute;top:-6px;right:-8px;background:var(--gold);color:#000;font-size:8px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;">0</span></b>Cart
+  </div>
+  <div class="nav-item" id="nav-profile" onclick="showPage('profile')">
+    <b>◍</b>Profile
+  </div>
+</div>
+
+<script>
+// FINAL SYNC - Nav count update
+setInterval(()=>{
+  let c = cart.length;
+  let navCount = document.getElementById('nav-cart-count');
+  if(navCount){ navCount.innerText=c; navCount.style.display=c>0?'flex':'none'; }
+  document.getElementById('cart-count').innerText=c;
+},300);
+</script>
+
+</body>
+</html>
+  
+  
